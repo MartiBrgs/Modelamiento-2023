@@ -1,5 +1,6 @@
 # Modelamiento-2023
-Repositorio de la asignatura Modelamiento y Simulación de Redes USACH 2023-2.
+
+Repositorio fastapi para API generadora de numeros aleatorios
 
 ### Para usar fastapi localmente
 
