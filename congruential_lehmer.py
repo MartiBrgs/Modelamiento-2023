@@ -81,8 +81,8 @@ def congruential(params: congruentialParam) -> list:
     gcd = relative_prime_checker(m,c) # calculates gratest common divisor between m and c
     
     if (gcd > 1):
-        error = "The congruential algorithm needs c and m to be relatively prime numbers.\n" + \
-                f"c={c}, m={m}, Gretest Common Divisor={gcd}"
+        error = "El algoritmo necesita que c y m sean relativamente primos\n" + \
+                f"c={c}, m={m}, Máximo Común Divisor={gcd}"
         raise NonPrimeRelativesNumbers(error)
 
     # Generating the random generated numbers
