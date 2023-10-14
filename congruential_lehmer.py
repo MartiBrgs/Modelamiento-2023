@@ -81,10 +81,9 @@ def congruential(params: congruentialParam) -> list:
     gcd = relative_prime_checker(m,c) # calculates gratest common divisor between m and c
     
     if (gcd > 1):
-        print("-----------------------------------------------")
-        print(f"{m} y {c} no son relativamente primos\nSu MCD es {gcd}")
-        print("-----------------------------------------------")
-        raise NonPrimeRelativesNumbers
+        error = "The congruential algorithm needs c and m to be relatively prime numbers.\n" + \
+                f"c={c}, m={m}, Gretest Common Divisor={gcd}"
+        raise NonPrimeRelativesNumbers(error)
 
     # Generating the random generated numbers
     x_list, r_list = lehmer_algorithm(x0, a, c, m)
