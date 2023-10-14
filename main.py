@@ -16,7 +16,8 @@ html = f"""
     </head>
     <body>
         <div class="bg-gray-200 p-4 rounded-lg shadow-lg">
-            <h1>Hello from FastAPI@{__version__}</h1>
+            <h1>Generador de números aleatorios</h1>
+            <h2>Ingresa a docs para ver los distintos métodos:</h2>
             <ul>
                 <li><a href="/docs">/docs</a></li>
                 <li><a href="/redoc">/redoc</a></li>
