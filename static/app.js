@@ -1,4 +1,4 @@
-function sendForm() {
+function sendFormLehmer() {
     console.log("Enviando formulario...");
 
     // Limpiar mensajes de error anteriores
@@ -25,7 +25,7 @@ function sendForm() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Hubo un problema con la solicitud.');
+            throw new Error('Hubo un problema con el formato de los datos\nDeben ser enteros mayores a 0.');
         }
         return response.json();
     })
