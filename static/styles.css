@@ -5,12 +5,28 @@ body {
 }
 
 h1 {
+    font-size: 4.1rem;
+    text-align: center;
     color: #0a989f;
     font-weight: bold;
 }
 
+h2 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+p {
+    font-size: 1.3rem;
+}
+
 .nota {
     color: #d87a06;
+    font-size: 1rem;
+}
+
+.form-txt {
+    font-size: 1.2rem;
 }
 
 .btn {
@@ -21,6 +37,7 @@ h1 {
     color: white;
     text-decoration: none;
     font-weight: bold;
+    font-size: 1.8rem;
 }
 
 .btn.txt-btn-metodo:hover {
@@ -28,4 +45,9 @@ h1 {
     transition: background-color 0.1s ease;
     color: rgb(216, 235, 235);
     background-color: #098389;
+}
+
+footer .container p {
+    color: #cecece;
+    font-size: 1.2rem;
 }
