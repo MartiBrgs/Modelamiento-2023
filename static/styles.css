@@ -1,8 +1,31 @@
 body {
     font-family: 'Arial', sans-serif;
     margin: 20px;
+    background-color: beige;
 }
 
 h1 {
     color: #0a989f;
+    font-weight: bold;
+}
+
+.nota {
+    color: #d87a06;
+}
+
+.btn {
+    background-color: #0a989f;
+}
+
+.txt-btn-metodo {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn.txt-btn-metodo:hover {
+    transition: color 0.1s ease;
+    transition: background-color 0.1s ease;
+    color: rgb(216, 235, 235);
+    background-color: #098389;
 }
