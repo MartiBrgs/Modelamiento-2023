@@ -90,7 +90,6 @@ def congruentLehmer(params: lehmerParams) -> list:
 
     return x_list, r_list
 
-
 # Testing only
 if __name__ == "__main__":
     

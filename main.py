@@ -24,8 +24,6 @@ async def procesar_datos(
         "g": g
     }
 
-    #recibido = f"recibido: {params}"
-
     try:
         x_list, r_list = congruentMult(multParams(**params))
         result = {
@@ -51,9 +49,7 @@ async def procesar_datos(
         "g": g,
         "c": c
     }
-    
-    #recibido = f"recibido: {params}"
-    
+
     try:
         x_list, r_list = congruentLehmer(lehmerParams(**params))
         result = {
