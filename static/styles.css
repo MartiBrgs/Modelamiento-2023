@@ -50,3 +50,8 @@ footer .container p {
     color: #cecece;
     font-size: 1.2rem;
 }
+
+.margin-x {
+    margin-left: 30px;
+    margin-right: 30px;
+}
