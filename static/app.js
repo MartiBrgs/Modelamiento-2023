@@ -1,3 +1,44 @@
+let myChart;
+
+function plot_results(r_list) {
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    myChart = new Chart(ctx, {
+        type: 'scatter',  // Puedes cambiar el tipo de gráfico según tus necesidades
+        data: {
+            labels: Array.from({ length: r_list.length }, (_, i) => i + 1),
+            datasets: [{
+                label: 'Valores de r en función del número de muestra',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                pointRadius: 8,
+                data: r_list.map((value, index) => ({ x: index + 1, y: value })),
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                y: {
+                    min: 0,
+                    max: 1.01  // Ajusta según tus necesidades
+                }
+            }
+        }
+    });
+    // Devuelve la instancia de Chart.js para que puedas manipularla más adelante si es necesario
+    return myChart;
+}
+
+
 function sendFormLehmer() {
     console.log("Enviando formulario...");
 
@@ -57,6 +98,9 @@ function sendFormLehmer() {
 
                 // Mostrar la sección de resultados
                 document.getElementById('results').style.display = 'block';
+                // Grafico
+                plot_results(data.r_list);
+
             } else {
                 // La respuesta no tiene la estructura esperada
                 throw new Error('La respuesta del servidor no tiene la estructura esperada.');
@@ -128,6 +172,9 @@ function sendFormMult() {
 
                 // Mostrar la sección de resultados
                 document.getElementById('results').style.display = 'block';
+                // Grafico
+                plot_results(data.r_list);
+
             } else {
                 // La respuesta no tiene la estructura esperada
                 throw new Error('La respuesta del servidor no tiene la estructura esperada.');
