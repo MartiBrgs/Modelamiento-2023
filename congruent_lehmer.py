@@ -1,5 +1,5 @@
 """
-This script contains differents methods of getting random numbers
+This script contains D.H Lehmer method for getting random numbers
 """
 from pydantic import BaseModel, conint
 import numpy as np
@@ -9,7 +9,7 @@ class NonPrimeRelativesNumbers(Exception):
         self.mensaje = mensaje
         super().__init__(self.mensaje)
 
-class congruentialParam(BaseModel):
+class lehmerParams(BaseModel):
     x0: conint(gt=0)
     k: conint(gt=0)
     g: conint(gt=0)
@@ -54,10 +54,10 @@ def lehmer_algorithm(x0, a, c, m) -> list:
     return x_list, r_list
 
 
-def congruential(params: congruentialParam) -> list:
+def congruentLehmer(params: lehmerParams) -> list:
     """
     This function creates a list of random generated numbers between 0 and 1
-    using the D.H Lehmer congruential algorithm (a linear algorithm)
+    using the D.H Lehmer congruent algorithm (a linear algorithm)
 
     Inputs are:
     x0: an integer wich represents the initial seed for the algorithm
@@ -90,6 +90,7 @@ def congruential(params: congruentialParam) -> list:
 
     return x_list, r_list
 
+# Testing only
 if __name__ == "__main__":
     
     test_params = {
@@ -99,7 +100,7 @@ if __name__ == "__main__":
         "c": 7
     }
     
-    x_list, r_list = congruential(congruentialParam(**test_params))
+    x_list, r_list = congruentLehmer(lehmerParams(**test_params))
 
     print("Valores para lehmer")
     for key, value in test_params.items():
