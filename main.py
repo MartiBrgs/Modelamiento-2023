@@ -3,6 +3,7 @@ from congruent_lehmer import congruentLehmer, lehmerParams, NonPrimeRelativesNum
 from congruent_mult import congruentMult, multParams, NonOddSeedError
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
+from productos_medios import prodMedios, prodMParams, nonDDigitNumber
 
 app = FastAPI()
 
@@ -60,3 +61,29 @@ async def procesar_datos(
         result = {"error": str(e)}
 
     return result
+
+@app.post("/prodM")
+async def procesar_datos(
+    D: int = Form(...),
+    x0: int = Form(...),
+    x1: int = Form(...),
+    output_len: int = Form(...),
+):
+    params = {
+        "D": D,
+        "x0": x0,
+        "x1": x1,
+        "output_len": output_len
+    }
+
+    try:
+        y_list, r_list = prodMedios(prodMParams(**params))
+        result = {
+            "y_list": y_list.tolist(),
+            "r_list": r_list.tolist()
+        }
+    except nonDDigitNumber as e:
+        result = {"error": str(e)}
+
+    return result
+
