@@ -82,8 +82,8 @@ async def procesar_datos(
         y_list, r_list = cuadMedios(cuadParams(**params))
         
         result = {
-            "y_list": y_list.tolist(),
-            "r_list": r_list.tolist()
+            "y_list": y_list,
+            "r_list": r_list
         }
 
     except nonDigitos as e:
@@ -109,8 +109,8 @@ async def procesar_datos(
         y_list, r_list = prodMedios(prodMParams(**params))
 
         result = {
-            "y_list": y_list.tolist(),
-            "r_list": r_list.tolist()
+            "y_list": y_list,
+            "r_list": r_list
         }
 
     except nonDDigitNumber as e:
