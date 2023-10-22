@@ -4,23 +4,38 @@ This script contains congruential product method for getting random numbers
 from pydantic import BaseModel, conint, validator
 import numpy as np
 
-class NonOddSeedError(Exception):
-    def __init__(self, mensaje="The seed must be an odd number"):
+class NonConditionError(Exception):
+    def __init__(self, mensaje="The conditions are not met"):
         self.mensaje = mensaje
         super().__init__(self.mensaje)
 
 # Validando datos de entrada
 class multParams(BaseModel):
     x0: conint(gt=0)
-    k: conint(ge=0)
+    a: conint(gt=0)
+    b: conint(gt=0)
+    c: conint(gt=0)
     g: conint(gt=0)
 
 def odd_check(value: int) -> bool:
     if value % 2 == 0:
         return False
     return True
+
+def even_check(value: int) -> bool:
+    if value % 2 != 0:
+        return False
+    return True
+
+def int_check(numero):
+  try:
+    int(numero)
+    return True
+  except NonConditionError:
+    return False
+
     
-def mult_c_algorithm(x0, a, m, N) -> list:
+def algorit_no_lineal_cuad(x0, a, b, c, m, N) -> list:
     """
     This function calculates random generated numbers with
     the product congruential method and returns two lists
@@ -34,7 +49,7 @@ def mult_c_algorithm(x0, a, m, N) -> list:
 
     # Calculating x_n values
     for i in range(len(x_list) - 1):
-        x_list[i+1] = (a * x_list[i]) % m
+        x_list[i+1] = (a * pow(x_list[i],2) + b * x_list[i] + c) % m
 
     x_list = x_list[1:]
 
@@ -49,7 +64,7 @@ def mult_c_algorithm(x0, a, m, N) -> list:
 
 
     
-def congruentMult(params: multParams) -> list:
+def noLinealCuad(params: multParams) -> list:
     """
     This function creates a list of random generated numbers between 0 and 1
     using the product congruential algorithm
@@ -65,20 +80,33 @@ def congruentMult(params: multParams) -> list:
     # parameters
     x0 = params.x0
 
-    if (odd_check(x0) == False):
-        error = f"La semilla x0 debe ser impar\nValor ingresado x0: {x0}"
-        raise NonOddSeedError(error)
+    a = params.a
+    if (odd_check(a) == True):
+        error = f"El valor de a debe ser par\nValor ingresado a: {a}"
+        raise NonConditionError(error)
+
     
-    k = params.k
+    b = params.b
+    if ((b - 1) % 4 != 1):
+        error = f"No se cumple con la condición (b -1) mod 4 = 1\nValor ingrsado: {b}"
+
+    c = params.c
+    if (odd_check(c) == False):
+        error = f"El valor de c debe ser impar\nValor ingresado c: {c}"
+        raise NonConditionError(error)
+
     g = params.g
 
-    # a = 3 + (8 * k)
-    a = 5 + (8 * k)
+    if (int_check(g) != True):
+        error = f"El valor de g no es entero\nValor ingresado g: {g}"
+        raise NonConditionError(error)
+
     m = pow(2, g)
-    N = pow(2, g-2) # life time of the algorithm
+    N = m
+    # life time of the algorithm
 
     # Obtaining random number list
-    x_list, r_list = mult_c_algorithm(x0, a, m, N)
+    x_list, r_list = algorit_no_lineal_cuad(x0, a, b, c, m, N)
 
     return x_list, r_list
 
@@ -88,11 +116,13 @@ if __name__ == "__main__":
     
     test_params = {
         "x0": 15, 
-        "k": 2, 
-        "g": 5
+        "a": 2, 
+        "b": 5,
+        "c": 7,
+        "g": 4
     }
     
-    x_list, r_list = congruentMult(multParams(**test_params))
+    x_list, r_list = noLinealCuad(multParams(**test_params))
 
     print("Valores para congruencial multiplicativo")
     for key, value in test_params.items():
