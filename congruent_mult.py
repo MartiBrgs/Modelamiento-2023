@@ -87,7 +87,7 @@ def congruentMult(params: multParams) -> list:
 if __name__ == "__main__":
     
     test_params = {
-        "x0": 16, 
+        "x0": 15, 
         "k": 2, 
         "g": 5
     }
