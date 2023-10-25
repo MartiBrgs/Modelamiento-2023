@@ -1,7 +1,7 @@
 """
 This script contains congruential product method for getting random numbers
 """
-from pydantic import BaseModel, conint, validator
+from pydantic import BaseModel, conint
 import numpy as np
 
 class NonConditionError(Exception):
@@ -10,22 +10,15 @@ class NonConditionError(Exception):
         super().__init__(self.mensaje)
 
 # Validando datos de entrada
-class multParams(BaseModel):
+class nonLinealCuadParams(BaseModel):
     x0: conint(gt=0)
     a: conint(gt=0)
     b: conint(gt=0)
     c: conint(gt=0)
     g: conint(gt=0)
 
-def odd_check(value: int) -> bool:
-    if value % 2 == 0:
-        return False
-    return True
-
 def even_check(value: int) -> bool:
-    if value % 2 != 0:
-        return False
-    return True
+    return value % 2 == 0
 
 def int_check(numero):
   try:
@@ -33,12 +26,11 @@ def int_check(numero):
     return True
   except NonConditionError:
     return False
-
     
 def algorit_no_lineal_cuad(x0, a, b, c, m, N) -> list:
     """
     This function calculates random generated numbers with
-    the product congruential method and returns two lists
+    the non lineal cuadratic method and returns two lists
     """
 
     # Initialazing numpy arrays to contain the numbers generated (to work with floats)
@@ -64,34 +56,22 @@ def algorit_no_lineal_cuad(x0, a, b, c, m, N) -> list:
 
 
     
-def noLinealCuad(params: multParams) -> list:
-    """
-    This function creates a list of random generated numbers between 0 and 1
-    using the product congruential algorithm
-
-    Inputs are:
-    x0: an odd integer wich represents the initial seed for the algorithm
-    k: an integer used to define "a" k should be greater or equal to 0
-    g: an integer to define "m=2^g", wich is the maximum life time of the algorithm (N)
-
-    Returns two lists of lenght "m" containing #m random generated numbers in list_r (floats between 0 and 1)
-    and the inter-calculations of x's.
-    """
+def noLinealCuad(params: nonLinealCuadParams) -> list:
     # parameters
     x0 = params.x0
 
     a = params.a
-    if (odd_check(a) == True):
+    if (not even_check(a)):
         error = f"El valor de a debe ser par\nValor ingresado a: {a}"
         raise NonConditionError(error)
 
-    
     b = params.b
-    if ((b - 1) % 4 != 1):
-        error = f"No se cumple con la condición (b -1) mod 4 = 1\nValor ingrsado: {b}"
+    if (b % 4 != (a + 1)):
+        error = f"No se cumple con la condición b mod 4 = a + 1\nValor ingrsado: {b}"
+        raise NonConditionError(error)
 
     c = params.c
-    if (odd_check(c) == False):
+    if (even_check(c)):
         error = f"El valor de c debe ser impar\nValor ingresado c: {c}"
         raise NonConditionError(error)
 
@@ -102,8 +82,8 @@ def noLinealCuad(params: multParams) -> list:
         raise NonConditionError(error)
 
     m = pow(2, g)
-    N = m
-    # life time of the algorithm
+
+    N = m # life time of the algorithm
 
     # Obtaining random number list
     x_list, r_list = algorit_no_lineal_cuad(x0, a, b, c, m, N)
@@ -115,18 +95,19 @@ def noLinealCuad(params: multParams) -> list:
 if __name__ == "__main__":
     
     test_params = {
-        "x0": 15, 
+        "x0": 12, 
         "a": 2, 
-        "b": 5,
-        "c": 7,
+        "b": 3,
+        "c": 3,
         "g": 4
     }
     
-    x_list, r_list = noLinealCuad(multParams(**test_params))
+    x_list, r_list = noLinealCuad(nonLinealCuadParams(**test_params))
 
-    print("Valores para congruencial multiplicativo")
+    print("Valores para test")
     for key, value in test_params.items():
         print(f"{key}: {value}")
     print("resultados")
     for i in range(len(x_list)):
         print(f"x[{i+1}]: {x_list[i]}  --> r[{i+1}]: {r_list[i]}")
+    print(r_list)

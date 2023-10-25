@@ -5,9 +5,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from cuadrados_medios import cuadMedios, cuadParams, nonDigitos
 from productos_medios import prodMedios, prodMParams, nonDDigitNumber
-from mult_constantes import multConstante, algoritmoMultConstante, nonDigitos
-from congruent_adit import secuenciaX, congruentAditivo, nonDigitos
-from congru_no_lineal_cuad import noLinealCuad, algorit_no_lineal_cuad, NonConditionError
+from mult_constantes import multConstante, nonDigitos, multConstParams
+from congruent_adit import secuenciaX, nonDigitos
+from congru_no_lineal_cuad import noLinealCuad, NonConditionError, nonLinealCuadParams
 
 app = FastAPI()
 
@@ -121,7 +121,7 @@ async def procesar_datos(
 
     return result
 
-@app.post("/multCons")
+@app.post("/multConst")
 async def procesar_datos(
     d: int = Form(...),
     x0: int = Form(...),
@@ -132,12 +132,12 @@ async def procesar_datos(
         "d": d,
         "x0": x0,
         "a": a,
-        "output_len": output_len,
+        "output_len": output_len
     }
 
     try:
-        y_list, r_list = multConstante(cuadParams(**params))
-        
+        y_list, r_list = multConstante(multConstParams(**params))
+
         result = {
             "y_list": y_list,
             "r_list": r_list
@@ -174,7 +174,7 @@ async def procesar_datos(
     return result
 
 
-@app.post("/noLineal")
+@app.post("/nonLinealCuad")
 async def procesar_datos(
     x0: int = Form(...),
     a: int = Form(...),
@@ -191,7 +191,7 @@ async def procesar_datos(
     }
 
     try:
-        x_list, r_list = noLinealCuad(multParams(**params))
+        x_list, r_list = noLinealCuad(nonLinealCuadParams(**params))
         result = {
             "x_list": x_list.tolist(),
             "r_list": r_list.tolist()
