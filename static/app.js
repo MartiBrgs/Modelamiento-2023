@@ -338,3 +338,157 @@ function sendFormCuadM() {
         document.getElementById('errorContainer').style.display = 'block';
     });
 }
+
+function sendFormMultConst() {
+    console.log("Enviando formulario...");
+
+    // Limpiar mensajes de error anteriores
+    document.getElementById('errorContainer').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+
+    // Obtener los valores de los campos de entrada
+    const d = document.getElementById('d').value;
+    const x0 = document.getElementById('x0').value;
+    const a = document.getElementById('a').value;
+    const output_len = document.getElementById('output_len').value;
+    
+    // Construir el cuerpo de la solicitud
+    const formData = new FormData();
+    formData.append('d', d);
+    formData.append('x0', x0);
+    formData.append('a', a);
+    formData.append('output_len', output_len);
+
+    // Hacer la solicitud POST a la ruta de tu función en FastAPI
+    fetch('/multConst', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Hubo un problema con el formato de los datos\nDeben ser enteros mayores a 0.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Verificar si la respuesta contiene la clave "error"
+        if (data.error) {
+            // Manejar el mensaje de error y mostrarlo
+            console.error('Error:', data.error);
+            document.getElementById('errorContainer').innerText = data.error;
+            document.getElementById('errorContainer').style.display = 'block';
+        } else {
+            // Verificar si la respuesta contiene las claves esperadas
+            if (data.y_list && data.r_list) {
+                // Manejar la respuesta del servidor
+                console.log(data);
+
+                const resultsBody = document.getElementById('resultsBody');
+                resultsBody.innerHTML = ""; // Limpiar resultados anteriores
+
+                data.y_list.forEach((y, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${y}</td>
+                        <td>${data.r_list[index]}</td>
+                    `;
+                    resultsBody.appendChild(row);
+                });
+
+                // Mostrar la sección de resultados
+                document.getElementById('results').style.display = 'block';
+                // Grafico
+                plot_results(data.r_list);
+
+            } else {
+                // La respuesta no tiene la estructura esperada
+                throw new Error('La respuesta del servidor no tiene la estructura esperada.');
+            }
+        }
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud y mostrar el mensaje de error
+        console.error('Error:', error.message);
+        document.getElementById('errorContainer').innerText = error.message;
+        document.getElementById('errorContainer').style.display = 'block';
+    });
+}
+
+function sendFormNonLinealCuad() {
+    console.log("Enviando formulario...");
+
+    // Limpiar mensajes de error anteriores
+    document.getElementById('errorContainer').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+
+    // Obtener los valores de los campos de entrada
+    const x0 = document.getElementById('x0').value;
+    const a = document.getElementById('a').value;
+    const b = document.getElementById('b').value;
+    const c = document.getElementById('c').value;
+    const g = document.getElementById('g').value;
+    
+    // Construir el cuerpo de la solicitud
+    const formData = new FormData();
+    formData.append('x0', x0);
+    formData.append('a', a);
+    formData.append('b', b);
+    formData.append('c', c);
+    formData.append('g', g);
+
+    // Hacer la solicitud POST a la ruta de tu función en FastAPI
+    fetch('/nonLinealCuad', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Hubo un problema con el formato de los datos\nDeben ser enteros mayores a 0.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Verificar si la respuesta contiene la clave "error"
+        if (data.error) {
+            // Manejar el mensaje de error y mostrarlo
+            console.error('Error:', data.error);
+            document.getElementById('errorContainer').innerText = data.error;
+            document.getElementById('errorContainer').style.display = 'block';
+        } else {
+            // Verificar si la respuesta contiene las claves esperadas
+            if (data.x_list && data.r_list) {
+                // Manejar la respuesta del servidor
+                console.log(data);
+
+                const resultsBody = document.getElementById('resultsBody');
+                resultsBody.innerHTML = ""; // Limpiar resultados anteriores
+
+                data.x_list.forEach((x, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${x}</td>
+                        <td>${data.r_list[index]}</td>
+                    `;
+                    resultsBody.appendChild(row);
+                });
+
+                // Mostrar la sección de resultados
+                document.getElementById('results').style.display = 'block';
+                // Grafico
+                plot_results(data.r_list);
+
+            } else {
+                // La respuesta no tiene la estructura esperada
+                throw new Error('La respuesta del servidor no tiene la estructura esperada.');
+            }
+        }
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud y mostrar el mensaje de error
+        console.error('Error:', error.message);
+        document.getElementById('errorContainer').innerText = error.message;
+        document.getElementById('errorContainer').style.display = 'block';
+    });
+}

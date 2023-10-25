@@ -1,5 +1,4 @@
 from pydantic import BaseModel, conint
-import numpy as np
 
 class nonDigitos(Exception):
     def __init__(self, mensaje="The seed must have D digits"):
@@ -40,6 +39,3 @@ if __name__ == "__main__":
         "m": 100,  
         "output_len": 15
     }
-
-    secuenciaX(Params(**test_params))
-
