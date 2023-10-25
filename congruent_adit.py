@@ -1,4 +1,5 @@
 from pydantic import BaseModel, conint
+import numpy as np
 
 class nonDigitos(Exception):
     def __init__(self, mensaje="The seed must have D digits"):
@@ -22,20 +23,26 @@ def secuenciaX(params: Params):
 
     sequence = x_values.copy()
 
-    for i in range(n + 1, n + output_len + 1):
-        xi = (sequence[-1] + sequence[-n]) % m
+    for i in range(n, n + output_len):
+        xi = (sequence[i-1] + sequence[i-n]) % m
         sequence.append(xi)
-    
-    return n, sequence  # Devolver n junto con la secuencia generada
+
+    return n, sequence[n:]  
 
 def congruentAditivo(n, sequence, m):
-    r_list = [x / m for x in sequence[n:]]
+    r_list = [x / (m - 1) for x in sequence]
     return r_list
 
 if __name__ == "__main__":
     test_params = {
-        "n": 5,  # Cantidad de elementos de la lista inicial 
-        "x_values": [65, 89, 98, 3, 5],  # Valores iniciales 
+        "n": 3,  # Cantidad de elementos de la lista inicial 
+        "x_values": [15, 23, 38],  # Valores iniciales 
         "m": 100,  
         "output_len": 15
     }
+
+    n, x_list = secuenciaX(Params(**test_params))
+    r_list = congruentAditivo(n, x_list, test_params["m"])
+    
+    print("Secuencia X generada:", x_list)
+    print("Números r_i:", r_list)
