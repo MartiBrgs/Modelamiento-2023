@@ -1,12 +1,11 @@
 from pydantic import BaseModel, conint
-import numpy as np
 
 class nonDigitos(Exception):
     def __init__(self, mensaje="The seed must have d digits"):
         self.mensaje = mensaje
         super().__init__(self.mensaje)
 
-class cuadParams(BaseModel):
+class multConstParams(BaseModel):
     d: conint(gt=3)
     x0: conint(gt=0)
     a: conint(gt=3)  # Nueva entrada para la constante 'a'
@@ -49,7 +48,7 @@ def algoritmoMultConstante(x0: str, a: str, d: int, output_len: int = 10) -> lis
 
     return y_list, r_list
 
-def multConstante(params: cuadParams) -> list:
+def multConstante(params: multConstParams) -> list:
     output_len = params.output_len
     d = params.d
     a = params.a
@@ -71,4 +70,11 @@ if __name__ == "__main__":
         "output_len": 12
     }
 
-    multConstante(cuadParams(**test_params))
+    y_list, r_list = multConstante(multConstParams(**test_params))
+
+    print("Valores para test")
+    for key, value in test_params.items():
+        print(f"{key}: {value}")
+    print("resultados")
+    for i in range(len(y_list)):
+        print(f"y[{i+1}]: {y_list[i]}  --> r[{i+1}]: {r_list[i]}")
