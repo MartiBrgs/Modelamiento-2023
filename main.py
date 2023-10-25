@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse, FileResponse
 from cuadrados_medios import cuadMedios, cuadParams, nonDigitos
 from productos_medios import prodMedios, prodMParams, nonDDigitNumber
 from mult_constantes import multConstante, nonDigitos, multConstParams
-from congruent_adit import secuenciaX, nonDigitos
+from congruent_adit import secuenciaX, congruentAditivo, nonDigitos
 from congru_no_lineal_cuad import noLinealCuad, NonConditionError, nonLinealCuadParams
 
 app = FastAPI()
@@ -163,10 +163,11 @@ async def procesar_datos(
     }
 
     try:
-        x_list, r_list = secuenciaX(multParams(**params))
+        n, x_list = secuenciaX(params(**params))
+        r_list = congruentAditivo(n, x_list, params["m"])
         result = {
-            "x_list": x_list.tolist(),
-            "r_list": r_list.tolist()
+            "x_list": x_list,
+            "r_list": r_list
         }
     except NonOddSeedError as e:
         result = {"error": str(e)}
