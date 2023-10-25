@@ -1,7 +1,7 @@
 """
 This script contains congruential product method for getting random numbers
 """
-from pydantic import BaseModel, conint, validator
+from pydantic import BaseModel, conint
 import numpy as np
 
 class NonConditionError(Exception):
@@ -26,7 +26,6 @@ def int_check(numero):
     return True
   except NonConditionError:
     return False
-
     
 def algorit_no_lineal_cuad(x0, a, b, c, m, N) -> list:
     """
@@ -67,8 +66,8 @@ def noLinealCuad(params: nonLinealCuadParams) -> list:
         raise NonConditionError(error)
 
     b = params.b
-    if ((b - 1) % 4 != 1):
-        error = f"No se cumple con la condición (b - 1) mod 4 = 1\nValor ingrsado: {b}"
+    if (b % 4 != (a + 1)):
+        error = f"No se cumple con la condición b mod 4 = a + 1\nValor ingrsado: {b}"
         raise NonConditionError(error)
 
     c = params.c
@@ -84,7 +83,7 @@ def noLinealCuad(params: nonLinealCuadParams) -> list:
 
     m = pow(2, g)
 
-    N = pow(2, g-2) # life time of the algorithm
+    N = m # life time of the algorithm
 
     # Obtaining random number list
     x_list, r_list = algorit_no_lineal_cuad(x0, a, b, c, m, N)
@@ -97,9 +96,9 @@ if __name__ == "__main__":
     
     test_params = {
         "x0": 12, 
-        "a": 4, 
-        "b": 6,
-        "c": 5,
+        "a": 2, 
+        "b": 3,
+        "c": 3,
         "g": 4
     }
     
@@ -111,3 +110,4 @@ if __name__ == "__main__":
     print("resultados")
     for i in range(len(x_list)):
         print(f"x[{i+1}]: {x_list[i]}  --> r[{i+1}]: {r_list[i]}")
+    print(r_list)
