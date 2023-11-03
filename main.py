@@ -8,6 +8,7 @@ from productos_medios import prodMedios, prodMParams, nonDDigitNumber
 from mult_constantes import multConstante, nonDigitos, multConstParams
 from congruent_adit import secuenciaX, congruentAditivo, nonDigitos
 from congru_no_lineal_cuad import noLinealCuad, NonConditionError, nonLinealCuadParams
+from prueba_de_medias import pruebaDeMedias
 
 app = FastAPI()
 
@@ -31,9 +32,12 @@ async def procesar_datos(
 
     try:
         x_list, r_list = congruentMult(multParams(**params))
+        pmedias = pruebaDeMedias(r_list=r_list)
+        
         result = {
             "x_list": x_list.tolist(),
-            "r_list": r_list.tolist()
+            "r_list": r_list.tolist(),
+            "pmedias": pmedias
         }
     except NonOddSeedError as e:
         result = {"error": str(e)}
