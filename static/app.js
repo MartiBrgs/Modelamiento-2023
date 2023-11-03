@@ -153,7 +153,7 @@ function sendFormMult() {
             document.getElementById('errorContainer').style.display = 'block';
         } else {
             // Verificar si la respuesta contiene las claves esperadas
-            if (data.x_list && data.r_list && data.pmedias) {
+            if (data.x_list && data.r_list && data.pmedias && data.pvar) {
                 // Manejar la respuesta del servidor
                 console.log(data);
 
@@ -170,33 +170,70 @@ function sendFormMult() {
                     resultsBody.appendChild(row);
                 });
 
+                //###########################################
+                // PRUEBA DE MEDIAS
+                //###########################################
+
                 // Mostrar la lista pmedias debajo de la tabla
                 const pmediasBody = document.getElementById('pmediasBody');
                 pmediasBody.innerHTML = ""; // Limpiar resultados anteriores
 
-                const row = document.createElement('tr');
+                const row_pmedias = document.createElement('tr');
 
                 data.pmedias.forEach((pmedia) => {
                     const cell = document.createElement('td');
                     cell.textContent = pmedia;
-                    row.appendChild(cell);
+                    row_pmedias.appendChild(cell);
                 });
 
-                pmediasBody.appendChild(row);
+                pmediasBody.appendChild(row_pmedias);
 
                 // Obtener el promedio y los límites
                 const promedio = data.pmedias[0];
-                const limiteInferior = data.pmedias[1];
-                const limiteSuperior = data.pmedias[2];
+                const LB_medias = data.pmedias[1];
+                const UB_medias = data.pmedias[2];
 
                 // Obtener el elemento donde se mostrará el resultado
-                const resultadoEl = document.getElementById('pmediasBody_text');
+                const res_pmedias = document.getElementById('pmediasBody_text');
 
                 // Comparar el promedio con los límites y mostrar el resultado en el HTML
-                if (promedio >= limiteInferior && promedio <= limiteSuperior) {
-                    resultadoEl.innerHTML = '<p>La media se encuentra entre los límites, no se rechaza H0</p>';
+                if (promedio >= LB_medias && promedio <= UB_medias) {
+                    res_pmedias.innerHTML = '<p>La media se encuentra entre los límites, no se rechaza H0</p>';
                 } else {
-                    resultadoEl.innerHTML = '<p>La media se encuentra fuera de los límites, se rechaza H0</p>';
+                    res_pmedias.innerHTML = '<p>La media se encuentra fuera de los límites, se rechaza H0</p>';
+                }
+
+                //############################################################################
+                // PRUEBA DE VARIANZA
+                //############################################################################
+
+                // Mostrar la lista pmedias debajo de la tabla
+                const pvarBody = document.getElementById('pvarBody');
+                pvarBody.innerHTML = ""; // Limpiar resultados anteriores
+
+                const row_var = document.createElement('tr');
+
+                data.pvar.forEach((pvar) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = pvar;
+                    row_var.appendChild(cell);
+                });
+
+                pvarBody.appendChild(row_var);
+
+                // Obtener la varianza y los límites
+                const varianza = data.pvar[0];
+                const LB_var = data.pvar[1];
+                const UB_var = data.pvar[2];
+
+                // Obtener el elemento donde se mostrará el resultado
+                const resultadoEl = document.getElementById('pvarBody_text');
+
+                // Comparar la varianza con los límites y mostrar el resultado en el HTML
+                if (varianza >= LB_var && varianza <= UB_var) {
+                    resultadoEl.innerHTML = '<p>La varianza se encuentra entre los límites, no se rechaza H0</p>';
+                } else {
+                    resultadoEl.innerHTML = '<p>La varianza se encuentra fuera de los límites, se rechaza H0</p>';
                 }
 
                 // Mostrar la sección de resultados
