@@ -153,7 +153,7 @@ function sendFormMult() {
             document.getElementById('errorContainer').style.display = 'block';
         } else {
             // Verificar si la respuesta contiene las claves esperadas
-            if (data.x_list && data.r_list) {
+            if (data.x_list && data.r_list && data.pmedias) {
                 // Manejar la respuesta del servidor
                 console.log(data);
 
@@ -170,8 +170,38 @@ function sendFormMult() {
                     resultsBody.appendChild(row);
                 });
 
+                // Mostrar la lista pmedias debajo de la tabla
+                const pmediasBody = document.getElementById('pmediasBody');
+                pmediasBody.innerHTML = ""; // Limpiar resultados anteriores
+
+                const row = document.createElement('tr');
+
+                data.pmedias.forEach((pmedia) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = pmedia;
+                    row.appendChild(cell);
+                });
+
+                pmediasBody.appendChild(row);
+
+                // Obtener el promedio y los límites
+                const promedio = data.pmedias[0];
+                const limiteInferior = data.pmedias[1];
+                const limiteSuperior = data.pmedias[2];
+
+                // Obtener el elemento donde se mostrará el resultado
+                const resultadoEl = document.getElementById('pmediasBody_text');
+
+                // Comparar el promedio con los límites y mostrar el resultado en el HTML
+                if (promedio >= limiteInferior && promedio <= limiteSuperior) {
+                    resultadoEl.innerHTML = '<p>El promedio se encuentra entre los límites, no se rechaza H0</p>';
+                } else {
+                    resultadoEl.innerHTML = '<p>El promedio se encuentra fuera de los límites, se rechaza H0</p>';
+                }
+
                 // Mostrar la sección de resultados
                 document.getElementById('results').style.display = 'block';
+
                 // Grafico
                 plot_results(data.r_list);
 
