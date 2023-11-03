@@ -194,9 +194,9 @@ function sendFormMult() {
 
                 // Comparar el promedio con los límites y mostrar el resultado en el HTML
                 if (promedio >= limiteInferior && promedio <= limiteSuperior) {
-                    resultadoEl.innerHTML = '<p>El promedio se encuentra entre los límites, no se rechaza H0</p>';
+                    resultadoEl.innerHTML = '<p>La media se encuentra entre los límites, no se rechaza H0</p>';
                 } else {
-                    resultadoEl.innerHTML = '<p>El promedio se encuentra fuera de los límites, se rechaza H0</p>';
+                    resultadoEl.innerHTML = '<p>La media se encuentra fuera de los límites, se rechaza H0</p>';
                 }
 
                 // Mostrar la sección de resultados
