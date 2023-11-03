@@ -45,13 +45,19 @@ def upperBound(n:int, confidence: float):
     UB = chi2_value / (12 * (n - 1)) 
     return UB
     
-def pruebaDeVarianza(confidence: float, r_list: list):
+def pruebaDeVarianza(r_list: list, confidence: float = 0.95):
     V_r = V_r_list(r_list)
     n = len(r_list)
     LB = lowerBound(n, confidence)
     UB = upperBound(n, confidence)
 
-    return V_r, LB, UB
+    V_r = round(V_r, 4)
+    LB = round(LB, 4)
+    UB = round(UB, 4)
+
+    pvar_list = [V_r, LB, UB]
+
+    return pvar_list
 
 
 if __name__ == "__main__":
@@ -60,13 +66,13 @@ if __name__ == "__main__":
     alpha = 1 - confidence
     r_list = [0.4667, 0.6667, 0.6, 0., 0.2, 0.9333, 0.3333, 0.2667, 1., 0.1333 ,0.0667, 0.5333, 0.7333, 0.4, 0.8667, 0.8]
 
-    V_r, LB, UB = pruebaDeVarianza(confidence, r_list)
+    pvar = pruebaDeVarianza(r_list=r_list)
 
     print("Prueba de varianza")
 
-    print(f"Varianza: {V_r}, Lower bound: {LB}, Upper bound: {UB}")
+    print(f"Varianza: {pvar[0]}, Lower bound: {pvar[1]}, Upper bound: {pvar[2]}")
 
-    if (V_r >= LB and V_r <= UB):
+    if (pvar[0] >= pvar[1] and pvar[0] <= pvar[2]):
         print(f"La varianza se encuentra entre los limites, no se rechaza H0 con un nivel de aceptación de {confidence}")
     else:
         print(f"La varianza no se encuentra entre los limites, se rechaza H0 con un nivel de aceptación de {confidence}")
